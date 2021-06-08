@@ -28,6 +28,8 @@ def init_args():
     parser.add_argument('--dataset_path', type=str, default='from_yaml', help='Give path to dataset, else path from yaml file will be taken')
     parser.add_argument('--bb_path', type=str, default='from_yaml', help='Give path to bb weight, else path from yaml file will be taken')
     parser.add_argument('--gnn_path', type=str, default='from_yaml', help='Give path to gnn weight, else path from yaml file will be taken')
+    parser.add_argument('--net_type', type=str, default='from_yaml', help='Give net_type you want to use: resnet18/resnet32/resnet50/resnet101/resnet152/densenet121/densenet161/densenet169/densenet201/bn_inception')
+    parser.add_argument('--is_apex', type=str, default='from yaml', help='If you want to use apex set to 1')
     return parser.parse_args()
 
 
@@ -41,6 +43,10 @@ def main(args):
         config['models']['encoder_params']['pretrained_path'] = args.bb_path
     if args.bb_path != 'from_yaml':
         config['models']['gnn_params']['pretrained_path'] = args.gnn_path
+    if args.net_type != 'from_yaml':
+        config['models']['encoder_params']['net_type'] = args.net_type
+    if args.is_apex != 'from_yaml':
+        config['train_params']['is_apex'] = args.is_apex
 
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     logger.info('Switching to device {}'.format(device))

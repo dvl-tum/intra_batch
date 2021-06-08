@@ -1,81 +1,77 @@
 # About
 
-This repository contains a PyTorch implementation
-of [`Learning Intra-Batch Connections for Deep Metric Learning`].
-
-The config files contain the same parameters as used in the paper.
-
-# PyTorch version
+This repository the official PyTorch implementation
+of `Learning Intra-Batch Connections for Deep Metric Learning`. The config files contain the same parameters as used in the paper.
 
 We use torch 1.7.1 and torchvision 0.6.0. While the training and inference should
 be able to be done correctly with the newer versions of the libraries, be aware
 that at times the network trained and tested using versions might diverge or reach lower
-results. We provide a `evironment.yaml` file to create a corresponding conde environment.
+results. We provide a `evironment.yaml` file to create a corresponding conda environment.
 
-We also support half-precision training via Nvidia Apex.
+We also support mixed-precision training via Nvidia Apex and describe how to use it in usage.
 
-# Reproducing Results
-
-As in the paper we support training in 4 datasets: CUB-200-2011, CARS 196,
-Stanford Online Products and In-Shop datastes.i Simply provide the path to the
-dataset in the corresponding config file.
+As in the paper we support training on 4 datasets: CUB-200-2011, CARS 196, Stanford Online Products and In-Shop datasets.
 
 The majority of experiments are done using ResNet50. We
 provide support for the entire family of ResNet and DenseNet as well as 
-BN-Inception. Simply define the type of the network you want to use in config files.
-
-In order to train and test the network run file train.py
+BN-Inception.
 
 # Set up
 
 
 1. Clone and enter this repository:
 
-`git clone https://github.com/dvl-tum/intra_batch_connections.git`
+        git clone https://github.com/dvl-tum/intra_batch.git
 
-`cd intra_batch_connections`
+        cd intra_batch
 
 2. Create an Anaconda environment for this project:
 To set up a conda environment containing all used packages, please fist install 
 anaconda and then run
-   1. `conda env create -f environment.yml`
-    2. `conda activate intra_batch_dml`
-    3. `pip install torch-scatter==2.0.5 -f https://pytorch-geometric.com/whl/torch-1.5.0+cu102.html`
+   1.       conda env create -f environment.yml
+    2.      conda activate intra_batch_dml
+    3.      pip install torch-scatter==2.0.5 -f https://pytorch-geometric.com/whl/torch-1.5.0+cu102.html
+    4. If you want to use Apex, please follow the installation instructions on https://github.com/NVIDIA/apex
 
+3. Download datasets:
+Make a data directory by typing 
 
-3. Download datasets
-The datasets where downloaded using the following links:
-* CUB-200-2011: http://www.vision.caltech.edu/visipedia/CUB-200-2011.html
-* Cars196: https://ai.stanford.edu/~jkrause/cars/car_dataset.html
-* Stanford Online Products: https://cvgl.stanford.edu/projects/lifted_struct/
-* In-Shop: http://mmlab.ie.cuhk.edu.hk/projects/DeepFashion/InShopRetrieval.html
+        mkdir data
+    Then download the datasets using the following links and unzip them in the data directory:
+    * CUB-200-2011: http://www.vision.caltech.edu/visipedia/CUB-200-2011.html
+    * Cars196: https://vision.in.tum.de/webshare/u/seidensc/intra_batch_connections/CARS196.zip
+    * Stanford Online Products: https://cvgl.stanford.edu/projects/lifted_struct/
+    * In-Shop: http://mmlab.ie.cuhk.edu.hk/projects/DeepFashion/InShopRetrieval.html
 
-We also provide a parser for Stanford Online Products and In-Shop datastes. 
-You can find dem in the /dataset/ directory.
+    We also provide a parser for Stanford Online Products and In-Shop datastes. You can find dem in the `dataset/` directory.
 
-4. Download our models
-Please download the pretrained weights by using
+4. Download our models: Please download the pretrained weights by using
 
-`wget https://vision.in.tum.de/webshare/u/seidensc/intra_batch_connections/best_weights.zip`
+        wget https://vision.in.tum.de/webshare/u/seidensc/intra_batch_connections/best_weights.zip
 
-and unzip them.
+    and unzip them.
 
 # Usage
-You can find all relevant config files in the config directory.
+You can find config files for training and testing on each of the datasets in the `config/` directory. For training and testing, you will have to input which one you want to use (see below). You will only be able to adapt some basic variables over the command line. For all others please refer to the yaml file directly.
 
 ## Testing
-To test to networks choose one of the config files for testing like `config_cars_test.yaml` to evaluate the performance on Cars196 and run:
+To test to networks choose one of the config files for testing, e.g., `config_cars_test.yaml` to evaluate the performance on Cars196 and run:
 
-`pythin train.py --config_path config_cars_test.yaml --dataset_path <path to dataset> --bb_path <path to backbone weights> --gnn_path' <path to gnn weights>`
+    python train.py --config_path config_cars_test.yaml --dataset_path <path to dataset> --bb_path <path to backbone weights> --gnn_path' <path to gnn weights>
 
 If you don't specify anything, the default setting will be used.
 
 ## Training
 To train a network choose one of the config files for training like `config_cars_train.yaml` to train on Cars196 and run:
 
-`pythin train.py --config_path config_cars_train.yaml --dataset_path <path to dataset> --bb_path <path to backbone weights> --gnn_path' <path to gnn weights>`
+    python train.py --config_path config_cars_train.yaml --dataset_path <path to dataset> --bb_path <path to backbone weights> --gnn_path' <path to gnn weights> --net_type <net type you want to use>
 
-Again, if you don't specify anything, the default setting will be used.
+Again, if you don't specify anything, the default setting will be used. For the net type you have the following options (default is resnet50):
+
+`resnet18, resnet32, resnet50, resnet101, resnet152, densenet121, densenet161, densenet16, densenet201, bn_inception`
+
+If you want to use apex add `--is_apex 1` to the command.
+
 
 # Results
 |               | R@1   | R@2   | R@4   | R@8   | NMI   |

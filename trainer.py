@@ -8,7 +8,6 @@ from collections import defaultdict
 import torch.nn as nn
 from utils import losses
 import torch
-#from apex import amp
 import random
 import data_utility
 import time
@@ -99,6 +98,8 @@ class Trainer():
 
             # Do training in mixed precision
             if self.config['train_params']['is_apex']:
+                global amp
+                from apex import amp
                 [self.encoder, self.gnn], self.opt = amp.initialize([self.encoder, self.gnn], self.opt,
                                                         opt_level="O1")
             if torch.cuda.device_count() > 1:
