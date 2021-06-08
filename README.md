@@ -39,11 +39,19 @@ Make a data directory by typing
         mkdir data
     Then download the datasets using the following links and unzip them in the data directory:
     * CUB-200-2011: http://www.vision.caltech.edu/visipedia/CUB-200-2011.html
-    * Cars196: https://vision.in.tum.de/webshare/u/seidensc/intra_batch_connections/CARS196.zip
+    * Cars196: https://vision.in.tum.de/webshare/u/seidensc/intra_batch_connections/CARS.zip
     * Stanford Online Products: https://cvgl.stanford.edu/projects/lifted_struct/
     * In-Shop: http://mmlab.ie.cuhk.edu.hk/projects/DeepFashion/InShopRetrieval.html
 
-    We also provide a parser for Stanford Online Products and In-Shop datastes. You can find dem in the `dataset/` directory.
+    We also provide a parser for Stanford Online Products and In-Shop datastes. You can find dem in the `dataset/` directory. The datasets are expected to be structured as 
+    `dataset/images/class/`, where dataset is either CUB-200-2011, CARS, Stanford_Online_Products or In_shop and class are the classes of a given dataset. Example for CUB-200-2011: 
+
+            CUB_200_2011/images/001
+            CUB_200_2011/images/002
+            CUB_200_2011/images/003
+            ...
+            CUB_200_2011/images/200
+
 
 4. Download our models: Please download the pretrained weights by using
 
