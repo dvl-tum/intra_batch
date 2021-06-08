@@ -57,16 +57,16 @@ You can find config files for training and testing on each of the datasets in th
 ## Testing
 To test to networks choose one of the config files for testing, e.g., `config_cars_test.yaml` to evaluate the performance on Cars196 and run:
 
-    python train.py --config_path config_cars_test.yaml --dataset_path <path to dataset> --bb_path <path to backbone weights> --gnn_path' <path to gnn weights>
+    python train.py --config_path config_cars_test.yaml --dataset_path <path to dataset> 
 
-If you don't specify anything, the default setting will be used.
+The default dataset path is data.
 
 ## Training
 To train a network choose one of the config files for training like `config_cars_train.yaml` to train on Cars196 and run:
 
-    python train.py --config_path config_cars_train.yaml --dataset_path <path to dataset> --bb_path <path to backbone weights> --gnn_path' <path to gnn weights> --net_type <net type you want to use>
+    python train.py --config_path config_cars_train.yaml --dataset_path <path to dataset> --net_type <net type you want to use>
 
-Again, if you don't specify anything, the default setting will be used. For the net type you have the following options (default is resnet50):
+Again, if you don't specify anything, the default setting will be used. For the net type you have the following options:
 
 `resnet18, resnet32, resnet50, resnet101, resnet152, densenet121, densenet161, densenet16, densenet201, bn_inception`
 

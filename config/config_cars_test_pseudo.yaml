@@ -44,7 +44,7 @@ graph_params:
   set_negative: "hard"
 
 dataset:
-  dataset_path: "../../datasets/CARS"
+  dataset_path: "data/CARS"
   dataset_short: "cars"
   num_classes: 98
   trans: "GL_orig_RE"

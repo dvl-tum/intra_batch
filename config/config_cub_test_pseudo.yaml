@@ -44,7 +44,7 @@ graph_params:
   set_negative: "hard"
 
 dataset:
-  dataset_path: "../../datasets/CUB_200_2011"
+  dataset_path: "data/CUB_200_2011"
   dataset_short: "cub"
   num_classes: 100
   number_aug: 2
@@ -75,8 +75,8 @@ train_params:
     scaling_of_pre: 1
     scaling_distill: 1
     soft_temp: 1
-    feats: "results/0.8532544378698225_cub_1601148947.5862918/feats.json"
-    preds: "results/0.8532544378698225_cub_1601148947.5862918/preds.json"
+    feats: "no"
+    preds: "no"
 
 eval_params:
   cat: 0

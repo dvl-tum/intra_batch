@@ -44,7 +44,7 @@ graph_params:
   set_negative: "hard"
 
 dataset:
-  dataset_path: "../../datasets/CARS"
+  dataset_path: "data/CARS"
   dataset_short: "cars"
   num_classes: 98
   trans: "GL_orig_RE"
@@ -76,8 +76,8 @@ train_params:
     scaling_of_pre: 1
     scaling_distill: 1
     soft_temp: 10
-    preds: "teacher_student/preds_cars.json" 
-    feats: "teacher_student/feats_cars.json" 
+    preds: "no" 
+    feats: "no" 
     
 eval_params:
   output_test_enc: "plain"
