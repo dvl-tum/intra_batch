@@ -1,0 +1,84 @@
+mode: "train" #train/test/hyper_search/pretraining
+application: "DML"
+output_paht: "."
+
+models:
+  encoder_params:
+    pretrained_path: "no" 
+    net_type: "resnet50"
+    neck: 0
+    last_stride: 0
+    red: 4
+    bn_inception:
+      embed: 0
+      sz_embedding: 512
+
+  gnn_params:
+    pretrained_path: "no" 
+    red: 1
+    cat: 0
+    every: 0
+    gnn:
+      num_layers: 1 #2
+      aggregator: "add"
+      num_heads: 4
+      attention: "dot" 
+      mlp: 1
+      dropout_mlp: 0.1
+      norm1: 1
+      norm2: 1
+      res1: 1
+      res2: 1
+      dropout_1: 0.1
+      dropout_2: 0.1
+      mult_attr: 0
+    classifier:
+      neck: 1
+      num_classes: 3997
+      dropout_p: 0.4
+      use_batchnorm: 0
+
+graph_params:
+  sim_type: "correlation"
+  thresh: "no" #0
+  set_negative: "hard"
+
+dataset:
+  dataset_path: "../../datasets/In_shop"
+  dataset_short: "in_shop"
+  num_classes: 3997
+  trans: "GL_orig_RE"
+  number_aug: 2
+  magnitude: 27
+  sampling: "no"
+  bssampling: "no" #"NumberSampler"
+  val: 0
+  nb_workers: 4
+
+train_params:
+  num_classes_iter: 14 
+  num_elements_class: 4 
+  lr: 0.00011265974954242144  
+  weight_decay: 1.0554824926510768e-07 
+  num_epochs: 70
+  is_apex: 0
+  temperatur: 0.18591347176280537 
+  output_train_enc: "plain"
+  output_train_gnn: "plain"
+  loss_fn:
+    fns: "lsce_lsgnn" #ce/focalce can be used instead of lsce and lsgnn/focalgnn instead of gnn, rest can be added by ce_gnn_center...
+    scaling_ce: 1
+    scaling_gnn: 1
+    scaling_center: 0.5
+    scaling_triplet: 1
+    scaling_of: 1
+    scaling_of_pre: 1
+    scaling_distill: 1
+    soft_temp: 10
+    preds: 
+    feats: 
+
+eval_params:
+  output_test_enc: "plain"
+  output_test_gnn: "plain"
+  cat: 1

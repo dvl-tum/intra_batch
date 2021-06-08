@@ -1,0 +1,82 @@
+mode: "pseudo"
+application: "DML"
+output_paht: "."
+
+models:
+  encoder_params:
+    pretrained_path: "best_weights/0.8861117951243536resnet50_cars.pth"
+    net_type: "resnet50"
+    neck: 0
+    last_stride: 0
+    red: 4
+    bn_inception:
+      embed: 1
+      sz_embedding: 512
+
+  gnn_params:
+    pretrained_path: "best_weights/0.8861117951243536gnn_resnet50_cars.pth"
+    red: 1
+    cat: 0
+    every: 0
+    gnn:
+      num_layers: 1
+      aggregator: "add"
+      num_heads: 4
+      attention: "dot"
+      mlp: 1
+      dropout_mlp: 0.1
+      norm1: 1
+      norm2: 1
+      res1: 1
+      res2: 1
+      dropout_1: 0.1
+      dropout_2: 0.1
+      mult_attr: 0
+    classifier:
+      neck: 1
+      num_classes: 98
+      dropout_p: 0.4
+      use_batchnorm: 0
+
+graph_params:
+  sim_type: "correlation"
+  thresh: "no" #0
+  set_negative: "hard"
+
+dataset:
+  dataset_path: "../../datasets/CARS"
+  dataset_short: "cars"
+  num_classes: 98
+  trans: "GL_orig_RE"
+  sampling: "no"
+  bssampling: "no"
+  val: 0
+  nb_workers: 4
+
+train_params:
+  num_classes_iter: 10
+  num_elements_class: 7
+  lr: 0.00036683239911604993
+  weight_decay: 2.551918610962277e-09
+  num_epochs: 70
+  is_apex: 0
+  temperatur: 0.1111111111111
+  output_train_enc: "plain"
+  output_train_gnn: "plain"
+  loss_fn:
+    fns: "lsce_lsgnn"
+    scaling_ce: 1
+    scaling_gnn: 1
+    scaling_center: 0.5
+    scaling_triplet: 1
+    scaling_of: 1
+    scaling_of_pre: 1
+    scaling_distill: 1
+    soft_temp: 10
+    preds: "no"
+    feats: "no"
+
+eval_params:
+  output_test_enc: "plain"
+  output_test_gnn: "plain"
+  cat: 0
