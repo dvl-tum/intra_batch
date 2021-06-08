@@ -51,9 +51,9 @@ def main(args):
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     logger.info('Switching to device {}'.format(device))
 
-    save_folder_results = 'storage/search_results'
+    save_folder_results = 'results'
     utils.make_dir(save_folder_results)
-    save_folder_nets = 'storage/search_results_net'
+    save_folder_nets = 'results_nets'
 
     utils.make_dir(save_folder_nets)
     
