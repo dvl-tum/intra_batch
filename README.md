@@ -99,6 +99,7 @@ If you want to use apex add `--is_apex 1` to the command.
 
 If you find this code useful, please consider citing the following paper:
 
+```
 @inproceedings{DBLP:conf/icml/SeidenschwarzEL21,
   author    = {Jenny Seidenschwarz and
                Ismail Elezi and
@@ -112,3 +113,4 @@ If you find this code useful, please consider citing the following paper:
   publisher = {{PMLR}},
   year      = {2021},
 }
+```
