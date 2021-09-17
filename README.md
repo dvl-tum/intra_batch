@@ -94,3 +94,21 @@ If you want to use apex add `--is_apex 1` to the command.
 |               | R@1   | R@10  | R@20  | R@40  |
 | ------------- |:------|------:| -----:|------:|
 | In-Shop       | 92.8  | 98.5  | 99.1  | 99.2  |
+
+# Citation
+
+If you find this code useful, please consider citing the following paper:
+
+@inproceedings{DBLP:conf/icml/SeidenschwarzEL21,
+  author    = {Jenny Seidenschwarz and
+               Ismail Elezi and
+               Laura Leal{-}Taix{\'{e}}},
+  title     = {Learning Intra-Batch Connections for Deep Metric Learning},
+  booktitle = {Proceedings of the 38th International Conference on Machine Learning,
+               {ICML} 2021, 18-24 July 2021, Virtual Event},
+  series    = {Proceedings of Machine Learning Research},
+  volume    = {139},
+  pages     = {9410--9421},
+  publisher = {{PMLR}},
+  year      = {2021},
+}
