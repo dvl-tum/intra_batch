@@ -136,7 +136,6 @@ class Trainer():
         logger.info("Best Hyperparameters found: " + best_hypers)
         logger.info("Achieved {} with this hyperparameters".format(best_recall))
         logger.info("-----------------------------------------------------\n")
-
     def execute(self, train_params, eval_params):
         since = time.time()
         best_recall_iter = 0
