@@ -176,7 +176,7 @@ class Trainer():
                         return 0.0, self.encoder
 
                     # Backpropagation
-                    if train_params['is_apex']:
+                    if train_params['is_apex'] == 1:
                         with amp.scale_loss(loss, self.opt) as scaled_loss:
                             scaled_loss.backward()
                     else:
