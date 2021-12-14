@@ -30,6 +30,7 @@ def init_args():
     parser.add_argument('--gnn_path', type=str, default='from_yaml', help='Give path to gnn weight, else path from yaml file will be taken')
     parser.add_argument('--net_type', type=str, default='from_yaml', help='Give net_type you want to use: resnet18/resnet32/resnet50/resnet101/resnet152/densenet121/densenet161/densenet169/densenet201/bn_inception')
     parser.add_argument('--is_apex', type=str, default='from_yaml', help='If you want to use apex set to 1')
+    parser.add_argument('--name', type=str, help='Experiment name with format (CUB_R18_AblateSkipConnections), will determine the name of the subfolder of results')
     return parser.parse_args()
 
 
@@ -37,6 +38,8 @@ def main(args):
     with open(args.config_path, 'r') as f:
         config = yaml.load(f, Loader=yaml.FullLoader)
     
+    assert args.name, f'Please set an experiment name like CUB_R18_AblateSkipConnections'
+
     if args.dataset_path != 'from_yaml':
         config['dataset']['dataset_path'] = args.dataset_path
     if args.bb_path != 'from_yaml':
@@ -51,9 +54,9 @@ def main(args):
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     logger.info('Switching to device {}'.format(device))
 
-    save_folder_results = 'results'
+    save_folder_results = osp.join('results', args.name)
     utils.make_dir(save_folder_results)
-    save_folder_nets = 'results_nets'
+    save_folder_nets = osp.join('results_nets', args.name)
 
     utils.make_dir(save_folder_nets)
     
