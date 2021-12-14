@@ -20,6 +20,7 @@ import matplotlib.pyplot as plt
 import os
 import json
 from torch import autograd
+from tqdm import tqdm
 autograd.set_detect_anomaly(True)
 
 logger = logging.getLogger('GNNReID.Training')
@@ -29,11 +30,17 @@ torch.manual_seed(0)
 class Trainer():
     def __init__(self, config, save_folder_nets, save_folder_results,
                  device, timer):
+        torch.manual_seed(0)
+        random.seed(0)
+        np.random.seed(0)
+        torch.backends.cudnn.benchmark = False
+        torch.backends.cudnn.determinsitic = True
+
         self.config = config
         self.device = device
         self.save_folder_results = save_folder_results
-        self.save_folder_nets = save_folder_nets + '_intermediate'
-        utils.make_dir(save_folder_nets)
+        self.save_folder_nets = 'results_nets_intermediate'
+        utils.make_dir(self.save_folder_nets)
         self.save_folder_nets_final = save_folder_nets
 
         self.timer = timer
@@ -97,7 +104,7 @@ class Trainer():
                     self.config['dataset']['num_classes'])
 
             # Do training in mixed precision
-            if self.config['train_params']['is_apex']:
+            if self.config['train_params']['is_apex'] == 1:
                 global amp
                 from apex import amp
                 [self.encoder, self.gnn], self.opt = amp.initialize([self.encoder, self.gnn], self.opt,
@@ -135,7 +142,6 @@ class Trainer():
         logger.info("Best Hyperparameters found: " + best_hypers)
         logger.info("Achieved {} with this hyperparameters".format(best_recall))
         logger.info("-----------------------------------------------------\n")
-
     def execute(self, train_params, eval_params):
         since = time.time()
         best_recall_iter = 0
@@ -168,7 +174,7 @@ class Trainer():
                         g['lr'] = train_params['lr'] / 10.
 
                 # Normal training with backpropagation
-                for x, Y, I, P in self.dl_tr:
+                for x, Y, I, P in tqdm(self.dl_tr):
                     loss = self.forward_pass(x, Y, I, P, train_params)
                     # Check possible net divergence
                     if torch.isnan(loss):
@@ -415,14 +421,16 @@ class Trainer():
                 self.gnn_loss = [nn.CrossEntropyLoss().to(self.device) for
                         _ in range(self.config['models']['gnn_params']['gnn']['num_layers'])] 
             elif 'lsgnn' in params['fns'].split('_'):
+                use_gpu = False if self.device == torch.device('cpu') else True
                 self.gnn_loss = [losses.CrossEntropyLabelSmooth(
-                    num_classes=num_classes, dev=self.gnn_dev).to(self.device) for
+                    num_classes=num_classes, dev=self.gnn_dev, use_gpu=use_gpu).to(self.device) for
                         _ in range(self.config['models']['gnn_params']['gnn']['num_layers'])]
 
         # CrossEntropy Loss
         if 'lsce' in params['fns'].split('_'):
+            use_gpu = False if self.device == torch.device('cpu') else True
             self.ce = losses.CrossEntropyLabelSmooth(
-                num_classes=num_classes, dev=self.device).to(self.device)
+                num_classes=num_classes, dev=self.device, use_gpu=use_gpu).to(self.device)
         elif 'focalce' in params['fns'].split('_'):
             self.ce = losses.FocalLoss().to(self.device)
         elif 'ce' in params['fns'].split('_'):
