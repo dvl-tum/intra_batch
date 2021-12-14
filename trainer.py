@@ -30,6 +30,12 @@ torch.manual_seed(0)
 class Trainer():
     def __init__(self, config, save_folder_nets, save_folder_results,
                  device, timer):
+        torch.manual_seed(0)
+        random.seed(0)
+        np.random.seed(0)
+        torch.backends.cudnn.benchmark = False
+        torch.backends.cudnn.determinsitic = True
+
         self.config = config
         self.device = device
         self.save_folder_results = save_folder_results
